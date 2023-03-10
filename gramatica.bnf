@@ -1,0 +1,34 @@
+# | or
+# [] opcionales
+# {} pueden repetirse ninguna o más veces
+# ::= inicio de bloque
+
+
+numero ::= [0-9]+
+identificador ::= [a-zA-Z]+
+operador ::= "+"|"-"|"*"|"/"|"<"|">"|"<="|">="|"=="|"!="
+
+#llamaFuncion linea 25
+operando ::= identificador | numero | llamaFuncion
+expresion ::= operando | operando operador operando
+######################################################
+
+
+#estructuras de control
+while ::= "while" "("expresion")" bloque
+if ::= "if" "("expresion")" bloque ["else" bloque]
+
+estructuraControl ::=  if| while
+######################################################
+
+argumentos ::= expresion {"," expresion}
+llamaFuncion ::= identificador "(" [argumentos] ")"
+asignacion ::= identificador "=" expresion
+sentencia ::= asignacion | llamaFuncion | estructuraControl | bloque | expresion
+
+###################################################
+bloque ::= "{" {sentencia} "}"
+parametros ::= identificador {"," identificador}
+declaraFuncion ::= "function" identificador "("[parametros]")" bloque
+
+programa ::= declaraFuncion | sentencia
