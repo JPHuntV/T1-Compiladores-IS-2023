@@ -3,10 +3,17 @@
 # {} pueden repetirse ninguna o más veces
 # ::= inicio de bloque
 
+#podria tener una más sentencias dento del bloque 
+programa ::= "main" "("")" bloque
 
 numero ::= [0-9]+
-identificador ::= [a-zA-Z]+
+letra ::= [a-zA-Z]
 operador ::= "+"|"-"|"*"|"/"|"<"|">"|"<="|">="|"=="|"!="
+
+#un identificador puede ser una letra
+#o una letra con varias letras o numeros
+identificador ::= letra (letra | numero |"")*
+                                            
 
 #llamaFuncion linea 25
 operando ::= identificador | numero | llamaFuncion
@@ -14,12 +21,34 @@ expresion ::= operando | operando operador operando
 ######################################################
 
 
+expresion ::= termino (operadorSum termino)* #es un valor, respeta precedencia de operadores
+termino ::= factor (operadorMult factor)*
+factor ::= operadorUnario? valor #puede o no darse el operador unario, es opcional
+valor ::= intLiteral | floatLiteral | stringLiteral | charLiteral | boolLiteral | identificador array? | llamaFuncion
+
+#literales
+intLiteral ::= numero
+floatLiteral ::= numero "." numero
+stringLiteral ::= """letra*"""
+charLiteral ::= "'" letra "'"
+boolLiteral ::= "true" | "false"
+
+array ::= expresion ("," expresion)*
+
 #estructuras de control
 while ::= "while" "("expresion")" bloque
-if ::= "if" "("expresion")" bloque ["else" bloque]
 
-estructuraControl ::=  if| while
+#elif else es opcional []
+if ::= "if" "("expresion")" bloque ["else" if | "else" sentencia]
+elif ::= "elif" "("expresion")" bloque ["else" if | "else" sentencia]
+
+doWhile ::= "do" bloque "while" "("expresion")"
+for ::= "for" "(" declaraVar expresion expresion ")" bloque
+estructuraControl ::=  if | while | doWhile | for
 ######################################################
+
+return ::= "return" expresion
+break ::= "break"
 
 argumentos ::= expresion {"," expresion}
 llamaFuncion ::= identificador "(" [argumentos] ")"
@@ -31,4 +60,12 @@ bloque ::= "{" {sentencia} "}"
 parametros ::= identificador {"," identificador}
 declaraFuncion ::= "function" identificador "("[parametros]")" bloque
 
-programa ::= declaraFuncion | sentencia
+tipo ::= "int" | "float" | "string" | "char" | "array" | "bool"
+int ::= 
+variable ::= tipo expresion
+
+
+
+
+
+comentario ::= "@" char* | "/_" char* "_/" #######
