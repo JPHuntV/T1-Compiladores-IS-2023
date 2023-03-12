@@ -17,7 +17,6 @@ identificador ::= letra (letra | numero |"")*
 
 #llamaFuncion linea 25
 operando ::= identificador | numero | llamaFuncion
-expresion ::= operando | operando operador operando
 ######################################################
 
 
@@ -53,7 +52,14 @@ break ::= "break"
 argumentos ::= expresion {"," expresion}
 llamaFuncion ::= identificador "(" [argumentos] ")"
 asignacion ::= identificador "=" expresion
-sentencia ::= asignacion | llamaFuncion | estructuraControl | bloque | expresion
+sentencia ::= asignacion 
+    | llamaFuncion 
+    | estructuraControl 
+    | bloque 
+    | expresion 
+    | declaraVar 
+    | return 
+    | break
 
 ###################################################
 bloque ::= "{" {sentencia} "}"
@@ -61,8 +67,12 @@ parametros ::= identificador {"," identificador}
 declaraFuncion ::= "function" identificador "("[parametros]")" bloque
 
 tipo ::= "int" | "float" | "string" | "char" | "array" | "bool"
-int ::= 
-variable ::= tipo expresion
+declaraArray ::= ("int"|"char") identificador declaraArrayAux
+declaraArrayAux ::= "[" numero "]" | "["numero"]" declaraArrayAux
+declaraVar ::= tipo identificador declaraArrayAux? "=" expresion
+
+getValorArray ::= identificador declaraArrayAux
+setValorArray ::= getValorArray "=" expresion
 
 
 
