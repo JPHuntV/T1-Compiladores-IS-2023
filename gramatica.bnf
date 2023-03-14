@@ -19,12 +19,17 @@ identificador ::= letra (letra | numero |"")*
 operando ::= identificador | numero | llamaFuncion
 ######################################################
 
-
+#Las expresiones permiten combinar literales, variables y/o funciones, 
+#de los tipos reconocidos en la gramática.
 expresion ::= termino (operadorSum termino)* #es un valor, respeta precedencia de operadores
 termino ::= factor (operadorMult factor)*
 factor ::= operadorUnario? valor #puede o no darse el operador unario, es opcional
 valor ::= intLiteral | floatLiteral | stringLiteral | charLiteral | boolLiteral | identificador array? | llamaFuncion
 
+
+#op binarios
+opSuma ::= "+" | "-"
+opMult ::= "*" | "**" | "/" | "~"
 #literales
 intLiteral ::= numero
 floatLiteral ::= numero "." numero
@@ -52,6 +57,11 @@ break ::= "break"
 argumentos ::= expresion {"," expresion}
 llamaFuncion ::= identificador "(" [argumentos] ")"
 asignacion ::= identificador "=" expresion
+
+# Permitir sentencias para creación de variables, creación y asignación de expresiones
+#y asignación de expresiones a variables, y algunos casos, sólo expresiones sin 
+#asignación.
+
 sentencia ::= asignacion 
     | llamaFuncion 
     | estructuraControl 
