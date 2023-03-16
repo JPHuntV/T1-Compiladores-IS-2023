@@ -30,6 +30,15 @@ valor ::= intLiteral | floatLiteral | stringLiteral | charLiteral | boolLiteral 
 #op binarios
 opSuma ::= "+" | "-"
 opMult ::= "*" | "**" | "/" | "~"
+#operadores binarios
+operRelacional ::= "<" | "<=" | ">" | ">=" | "==" boolLiteral? | "!="  boolLiteral?
+expresionRelacional ::= numerico operRelacional numerico
+#operador Unario
+operadorUnario ::= "-" | "++" | "--"
+operadorLogico ::= "^" | "#" | "!" | "not" 
+expresionLogica ::= terminoLogico operadorLogico terminoLogico
+                    | terminoLogico
+terminoLogico  ::= boolLiteral | "("expresionLogica")"             
 #literales
 intLiteral ::= numero
 floatLiteral ::= numero "." numero
