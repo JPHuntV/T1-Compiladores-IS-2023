@@ -2,63 +2,80 @@
 # [] opcionales
 # {} pueden repetirse ninguna o más veces
 # ::= inicio de bloque
+# # comentario
 
 #podria tener una más sentencias dento del bloque 
 programa ::= "main" "("")" bloque
 
 numero ::= [0-9]+
 letra ::= [a-zA-Z]
-operador ::= "+"|"-"|"*"|"/"|"<"|">"|"<="|">="|"=="|"!="
+operador ::= "+" | "-" | "*" | "/" | "<" | ">" | "<=" | ">=" | "==" | "!="
 
 #un identificador puede ser una letra
 #o una letra con varias letras o numeros
 identificador ::= letra (letra | numero |"")*
-                                            
 
-#llamaFuncion linea 25
-operando ::= identificador | numero | llamaFuncion
-######################################################
+
+operando ::= identificador 
+    | numero 
+    | llamaFuncion
+
 
 #Las expresiones permiten combinar literales, variables y/o funciones, 
 #de los tipos reconocidos en la gramática.
 expresion ::= termino (operadorSum termino)* #es un valor, respeta precedencia de operadores
 termino ::= factor (operadorMult factor)*
 factor ::= operadorUnario? valor #puede o no darse el operador unario, es opcional
-valor ::= intLiteral | floatLiteral | stringLiteral | charLiteral | boolLiteral | identificador array? | llamaFuncion
+
+
+valor ::= intLiteral 
+    | floatLiteral 
+    | stringLiteral 
+    | charLiteral 
+    | boolLiteral 
+    | identificador array? 
+    | llamaFuncion
 
 
 #op binarios
 opSuma ::= "+" | "-"
 opMult ::= "*" | "**" | "/" | "~"
-#operadores binarios
-operRelacional ::= "<" | "<=" | ">" | ">=" | "==" boolLiteral? | "!="  boolLiteral?
-expresionRelacional ::= numerico operRelacional numerico
+opRelacional ::= "<" | "<=" | ">" | ">=" | "==" boolLiteral? | "!="  boolLiteral?
+
 #operador Unario
 operadorUnario ::= "-" | "++" | "--"
 operadorLogico ::= "^" | "#" | "!" | "not" 
+
+expresionRelacional ::= numerico opRelacional numerico
 expresionLogica ::= terminoLogico operadorLogico terminoLogico
-                    | terminoLogico
-terminoLogico  ::= boolLiteral | "("expresionLogica")"             
+    | terminoLogico
+
+terminoLogico  ::= boolLiteral 
+    | "("expresionLogica")"
+
 #literales
 intLiteral ::= numero
 floatLiteral ::= numero "." numero
 stringLiteral ::= """letra*"""
 charLiteral ::= "'" letra "'"
 boolLiteral ::= "true" | "false"
-
 array ::= expresion ("," expresion)*
 
 #estructuras de control
-while ::= "while" "("expresion")" bloque
 
 #elif else es opcional []
 if ::= "if" "("expresion")" bloque ["else" if | "else" sentencia]
 elif ::= "elif" "("expresion")" bloque ["else" if | "else" sentencia]
-
+while ::= "while" "("expresion")" bloque
 doWhile ::= "do" bloque "while" "("expresion")"
 for ::= "for" "(" declaraVar expresion "$" expresion ")" bloque
-estructuraControl ::=  if | while | doWhile | for
-######################################################
+
+
+estructuraControl ::=  if 
+    | while 
+    | doWhile 
+    | for
+
 
 return ::= "return" expresion
 break ::= "break"
@@ -71,6 +88,7 @@ asignacion ::= identificador "=" expresion "$"
 #y asignación de expresiones a variables, y algunos casos, sólo expresiones sin 
 #asignación.
 
+
 sentencia ::= asignacion 
     | llamaFuncion "$"
     | estructuraControl 
@@ -80,12 +98,20 @@ sentencia ::= asignacion
     | return "$"
     | break "$"
 
-###################################################
+
 bloque ::= "{" {sentencia} "}"
 parametros ::= tipo identificador {"," tipo identificador}
 declaraFuncion ::= "function" tipo identificador "("[parametros]")" bloque
 
-tipo ::= "int" | "float" | "string" | "char" | "array" | "bool"
+
+tipo ::= "int" 
+    | "float" 
+    | "string" 
+    | "char" 
+    | "array" 
+    | "bool"
+
+
 declaraArray ::= ("int"|"char") identificador declaraArrayAux "$"
 declaraArrayAux ::= "[" numero "]" | "["numero"]" declaraArrayAux
 declaraVar ::= tipo identificador declaraArrayAux? "=" expresion "$"
@@ -97,6 +123,4 @@ lectura ::= leer "(" numerico expresion")" "$"
 numerico ::= "int" | "float"
 escritura ::= escribir "(" expresion ")" "$"
 
-
-
-comentario ::= "@" char* | "/_" char* "_/" #######
+comentario ::= "@" char* | "/_" char* "_/" #comentario simple o en bloque
